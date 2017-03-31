@@ -11,9 +11,29 @@
 
   <base href="/" />
 
+  <!-- Angular Dependencies -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.0-rc.1/angular-ui-router.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.js"></script>
+
+  <!-- Angular scripts -->
+  <script src="app/app.js"></script>
+
+  <!-- Angular containers -->
+  <script src="app/containers/home/home.js"></script>
+
+  <!-- Angular components -->
+
+
+  <!-- Angular Services -->
+
+  <link rel="stylesheet" href="css/style.css" />
+
 </head>
 
-<body>
+<body ng-app="App">
+
+  <div ui-view class="ui-view-div"></div>
 
 </body>
 </html>
