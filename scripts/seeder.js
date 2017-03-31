@@ -1,25 +1,23 @@
-console.log("top");
 var models = require('../models/schemas');
 var text = require('./words');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/t9words');
 
-console.log(text.wordsShort);
-
-var words = ["test", "apple"];
+// console.log("words short", text.words);
 
 function addWords(arr){
   arr.forEach(function(word){
     models.Word.findOne({
       Word: word
-    }, function(err, word){
-      if(word){
-        console.log(word, "already exists");
+    }, function(err, found){
+      if(found){
+        // console.log(found, "already exists");
       } else{
         models.Word.create({
-          Word: word
+          Word: word,
+          Key: "test"
         }, function(err, word){
-          console.log(word,"created");
+          // console.log(word,"created");
         })
       }
     })
@@ -27,14 +25,13 @@ function addWords(arr){
 }
 
 function getAllWords(){
+  var result;
   models.Word.find({
-
   }, function(err, words){
-    console.log(words);
+    console.log("all words", words);
+    return words;
   })
 }
 
-console.log(words, "to add");
-
-addWords(words);
-getAllWords();
+addWords(text.words);
+console.log(getAllWords());
