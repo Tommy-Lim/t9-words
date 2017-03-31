@@ -2,12 +2,15 @@ var mongoose = require('mongoose');
 
 // WORD SCHEMA
 
-var WordSchema = new mongoose.Schema({
-  Word: String,
-  Key: String
+
+// KEY SCHEMA
+
+var KeySchema = new mongoose.Schema({
+  Key: String,
+  Words: []
 })
-var Word = mongoose.model('Word', WordSchema);
+var Key = mongoose.model('Key', KeySchema);
 
 module.exports = {
-  Word: Word
+  Key: Key
 }
