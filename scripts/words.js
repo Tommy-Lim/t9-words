@@ -187632,3 +187632,8 @@ zymurgy
 zyzzyva
 zyzzyvas
 zzz"
+
+module.exports = {
+  wordShort: wordShort,
+  wordsAll: wordsAll
+}
