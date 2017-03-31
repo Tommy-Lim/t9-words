@@ -6,6 +6,7 @@ var fs = require('fs');
 
 // GET WORDS
 var words =[];
+var fileName = "test.txt";
 
 function readLines(input, func, cb){
   var remaining = '';
@@ -25,7 +26,6 @@ function readLines(input, func, cb){
     if(remaining.length > 0){
       func(remaining);
     }
-    console.log("B", words);
     cb();
   })
 
@@ -35,46 +35,17 @@ function func(data){
   words.push(data);
 }
 
-var input = fs.createReadStream('test.txt');
+var input = fs.createReadStream(fileName);
 readLines(input, func, seedDB);
 
 
 // ADD WORDS TO DB
 
-function addWords(arr){
-  arr.forEach(function(word){
-    var key = getKey(word)
-    console.log(key);
-    models.Key.findOne({
-      Key: key
-    }, function(err, found){
-      if(found){
-        console.log("key found", key)
-        if(found.Words.indexOf(word) >= 0){
-          console.log(word, "exists");
-        } else{
-          console.log("added", word);
-          found.Words.push(word);
-          found.save();
-        }
-      } else{
-        console.log("create new key", key)
-        models.Key.create({
-          Key: getKey(word),
-          Words: [word]
-        }, function(err, key){
-          // console.log(word,"created");
-        })
-      }
-    })
-  })
-}
-
 function getAllKeys(){
   var result;
   models.Key.find({
   }, function(err, keys){
-    console.log("all key", key);
+    console.log("all keys", keys);
     return key;
   })
 }
@@ -109,31 +80,36 @@ function getKey(word){
 function seedDB(){
   async.eachSeries(words, function(word, callback){
     var key = getKey(word)
-    console.log(key);
     models.Key.findOne({
       Key: key
     }, function(err, found){
       if(found){
-        console.log("key found", key)
+        // key found
         if(found.Words.indexOf(word) >= 0){
-          console.log(word, "exists");
+          // word already exists
           callback();
         } else{
-          console.log("added", word);
+          // word added
           found.Words.push(word);
           found.save();
           callback();
         }
       } else{
-        console.log("create new key", key)
+        // creating new key and adding word
         models.Key.create({
           Key: getKey(word),
           Words: [word]
         }, function(err, key){
-          // console.log(word,"created");
+          // word created
           callback();
         })
       }
     })
+  }, function(err){
+    if(err){
+      console.log("Async Seed Error:", err)
+    } else{
+      console.log("Finished seeding DB with all words.");
+    }
   })
 }
