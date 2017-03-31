@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/Tommy-Lim/t9-words/issues"
   },
-  "homepage": "https://github.com/Tommy-Lim/t9-words#readme"
+  "homepage": "https://github.com/Tommy-Lim/t9-words#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "path": "^0.12.7",
+    "request": "^2.81.0"
+  }
 }
