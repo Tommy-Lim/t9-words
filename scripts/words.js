@@ -1,5 +1,7 @@
 var fs = require('fs');
 
+var words =[];
+
 function readLines(input, func){
   var remaining = '';
 
@@ -23,12 +25,13 @@ function readLines(input, func){
 
 function func(data){
   console.log("Line:", data);
+  words.push(data);
 }
 
 var input = fs.createReadStream('test.txt');
 readLines(input, func);
 
-var words = ["apple", "orange", "tomato", "dad", "add", "cab", "bac"];
+console.log(words);
 
 module.exports = {
   words: words,
