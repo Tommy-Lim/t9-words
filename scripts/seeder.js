@@ -1,8 +1,45 @@
 var models = require('../models/schemas');
-var text = require('./words');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/t9words');
 var async = require('async');
+var fs = require('fs');
+
+// GET WORDS
+var words =[];
+
+function readLines(input, func, cb){
+  var remaining = '';
+
+  input.on('data', function(data){
+    remaining += data;
+    var index = remaining.indexOf("\n");
+    while(index>-1){
+      var line = remaining.substring(0,index);
+      remaining = remaining.substring(index + 1);
+      func(line);
+      index = remaining.indexOf('\n');
+    }
+  })
+
+  input.on('end', function(){
+    if(remaining.length > 0){
+      func(remaining);
+    }
+    console.log("B", words);
+    cb();
+  })
+
+}
+
+function func(data){
+  words.push(data);
+}
+
+var input = fs.createReadStream('test.txt');
+readLines(input, func, seedDB);
+
+
+// ADD WORDS TO DB
 
 function addWords(arr){
   arr.forEach(function(word){
@@ -69,32 +106,34 @@ function getKey(word){
   return key;
 }
 
-async.eachSeries(text.words, function(word, callback){
-  var key = getKey(word)
-  console.log(key);
-  models.Key.findOne({
-    Key: key
-  }, function(err, found){
-    if(found){
-      console.log("key found", key)
-      if(found.Words.indexOf(word) >= 0){
-        console.log(word, "exists");
-        callback();
+function seedDB(){
+  async.eachSeries(words, function(word, callback){
+    var key = getKey(word)
+    console.log(key);
+    models.Key.findOne({
+      Key: key
+    }, function(err, found){
+      if(found){
+        console.log("key found", key)
+        if(found.Words.indexOf(word) >= 0){
+          console.log(word, "exists");
+          callback();
+        } else{
+          console.log("added", word);
+          found.Words.push(word);
+          found.save();
+          callback();
+        }
       } else{
-        console.log("added", word);
-        found.Words.push(word);
-        found.save();
-        callback();
+        console.log("create new key", key)
+        models.Key.create({
+          Key: getKey(word),
+          Words: [word]
+        }, function(err, key){
+          // console.log(word,"created");
+          callback();
+        })
       }
-    } else{
-      console.log("create new key", key)
-      models.Key.create({
-        Key: getKey(word),
-        Words: [word]
-      }, function(err, key){
-        // console.log(word,"created");
-        callback();
-      })
-    }
+    })
   })
-})
+}
