@@ -5,8 +5,13 @@ angular.module('App')
   controllerAs: 'homeComp'
 });
 
-function HomeCompCtrl(){
+function HomeCompCtrl(WordsService){
   var homeComp = this;
+  homeComp.query = "";
+
+  homeComp.getWords = function(query){
+    WordsService.getWords(query);
+  }
 }
 
-HomeCompCtrl.$inject = [];
+HomeCompCtrl.$inject = ['WordsService'];
