@@ -3,11 +3,23 @@ var router = express.Router();
 var models = require('../models/schemas');
 var mongoose = require('mongoose');
 
-router.route('/')
+router.route('/:id')
 .get(function(req, res){
-
-  res.send({
-    "data":"test data"
+  console.log("ID", req.params.id);
+  var query = req.params.id + "";
+  models.Key.findOne({
+    Key: query
+  }, function(err, key){
+    console.log(err, key);
+    if(!key){
+      res.send({
+        data: []
+      })
+    } else{
+      res.send({
+        data: key.Words
+      })
+    }
   })
 })
 

@@ -5,8 +5,9 @@ var async = require('async');
 var fs = require('fs');
 
 // GET WORDS
+// after words built into db; stringify content and save locally to array rather than db
 var words =[];
-var fileName = "test.txt";
+var fileName = "words.txt";
 
 function readLines(input, func, cb){
   var remaining = '';
@@ -78,6 +79,7 @@ function getKey(word){
 }
 
 function seedDB(){
+  console.log("Started seeding DB. This may take a while...");
   async.eachSeries(words, function(word, callback){
     var key = getKey(word)
     models.Key.findOne({
