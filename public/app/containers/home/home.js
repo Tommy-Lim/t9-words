@@ -5,7 +5,7 @@ angular.module('App')
   controllerAs: 'homeComp'
 });
 
-function HomeCompCtrl(WordsService){
+function HomeCompCtrl($timeout, WordsService){
   var homeComp = this;
   homeComp.query = "";
   homeComp.message = "";
@@ -26,9 +26,15 @@ function HomeCompCtrl(WordsService){
   }
 
   homeComp.clickKey = function(key){
+    var domKey = ".key" + key;
+    $(domKey).eq(0).css('background-color', 'grey');
+    $timeout(function(){
+      $(domKey).eq(0).css('background-color', 'lightseagreen');
+    }, 200);
+
     if(key == '1'){
       // do nothing
-    } else if(key == '#'){
+    } else if(key == 'Hash'){
       var resultLength = homeComp.results.length;
       if(resultLength > 1){
         // homeComp.results.push(homeComp.results.splice(0,1)[0]);
@@ -38,7 +44,7 @@ function HomeCompCtrl(WordsService){
           homeComp.currentResult = 0;
         }
       }
-    } else if (key == '*'){
+    } else if (key == 'Ast'){
       var queryLength = homeComp.query.length;
       if(queryLength > 0){
         homeComp.query = homeComp.query.slice(0, queryLength - 1);
@@ -72,4 +78,4 @@ function HomeCompCtrl(WordsService){
 
 }
 
-HomeCompCtrl.$inject = ['WordsService'];
+HomeCompCtrl.$inject = ['$timeout', 'WordsService'];
