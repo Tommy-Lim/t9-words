@@ -16,6 +16,19 @@ function WordsService($http){
     })
   }
 
+  this.getDict = function(){
+    var req = {
+      url: '/api/words/all',
+      method: 'GET'
+    }
+
+    $http(req).then(function success(res){
+      console.log(res.data.words);
+    }, function failure(res){
+      console.log("ERROR", res);
+    })
+  }
+
 
 }
 
