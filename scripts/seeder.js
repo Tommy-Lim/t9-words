@@ -39,9 +39,6 @@ function func(data){
 var input = fs.createReadStream(fileName);
 readLines(input, func, seedDB);
 
-
-// ADD WORDS TO DB
-
 function getAllKeys(){
   var result;
   models.Key.find({
