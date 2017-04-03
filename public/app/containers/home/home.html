@@ -2,6 +2,7 @@
   <div class="textarea">
     <div class="message">
       {{homeComp.message}}
+      <span ng-repeat="word in homeComp.words track by $index">{{word}}</span>
       {{homeComp.query}}
     </div>
     <div class="results">

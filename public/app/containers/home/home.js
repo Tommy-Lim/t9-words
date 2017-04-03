@@ -9,6 +9,7 @@ function HomeCompCtrl(WordsService){
   var homeComp = this;
   homeComp.query = "";
   homeComp.message = "";
+  homeComp.words = [];
   homeComp.results = [];
   homeComp.currentResult = 0;
 
@@ -48,11 +49,13 @@ function HomeCompCtrl(WordsService){
       }
     } else if(key == '0'){
       homeComp.query += " ";
+      var word = homeComp.results[homeComp.currentResult]
       if(homeComp.message == ""){
-        homeComp.message += homeComp.results[homeComp.currentResult];
+        homeComp.message += word;
       } else{
-        homeComp.message += (" " + homeComp.results[homeComp.currentResult]);
+        homeComp.message += (" " + word);
       }
+      homeComp.words.push(word);
       homeComp.results = [];
       // homeComp.getWords(homeComp.query);
     } else{
