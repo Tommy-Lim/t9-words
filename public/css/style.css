@@ -11,4 +11,20 @@ body{
   width: calc(100% - 8px);
   height: 100px;
   font-size: 16px;
+  position: relative;
+}
+
+.results{
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.result{
+  display: inline-block;
+  margin: 2px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background-color: lightseagreen;
+  color: white;
 }

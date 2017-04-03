@@ -10,8 +10,7 @@ function WordsService($http){
     }
 
     return $http(req).then(function success(res){
-      console.log(res);
-      return res;
+      return res.data.data;
     }, function failure(res){
       console.log("ERROR", res);
     })
