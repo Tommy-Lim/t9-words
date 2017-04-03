@@ -2,7 +2,7 @@ var WordsFile = require('./words.js')
 
 var words = WordsFile.words;
 
-
+console.log(words);
 // TRANFORM WORD TO KEY
 function getKey(word){
   var key = "";

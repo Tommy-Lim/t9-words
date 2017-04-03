@@ -2,16 +2,20 @@ var async = require('async');
 var fs = require('fs');
 
 // FILE TO PULL WORDS FROM
-var fileName = "words.txt";
+var fileSource = "words.txt";
+var fileDestination = "words.js"
 
 // ALL WORDS FROM FILE
 var words =[];
 
 // START FILE STREAM
-var input = fs.createReadStream(fileName);
+var input = fs.createReadStream(fileSource);
 
 // USE TO PRINT ALL WORDS
-readLines(input, addWordToArray, printWords);
+// readLines(input, addWordToArray, printWords);
+
+// WRITE ALL WORDS ARRAY TO FILE
+readLines(input, addWordToArray, writeWordsToFile);
 
 // READ LINES FROM FILE AND RUN FUNC FOR EACH AND CB AT END
 function readLines(input, func, cb){
@@ -50,4 +54,9 @@ function addWordToArray(data){
 function printWords(){
   console.log("WORDS COUNT:", words.length);
   console.log("WORDS:", JSON.stringify({words: words}));
+}
+
+function writeWordsToFile(){
+  var text = "module.exports = " + JSON.stringify({"words": words});
+  fs.writeFile(fileDestination, text);
 }
