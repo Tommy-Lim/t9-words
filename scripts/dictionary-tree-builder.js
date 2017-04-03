@@ -1,7 +1,11 @@
 var WordsFile = require('./words.js')
+var async = require('async');
+var fs = require('fs');
 
-// var words = WordsFile.words;
-var words = ["dad", "bad", "apple"];
+var words = WordsFile.words;
+// var words = ["dad", "bad", "apple"];
+
+var fileDestination = "dictionary.js"
 
 var dict = {
   words:[],
@@ -50,7 +54,6 @@ function letterToNumber(letter){
 
 // ADD WORD TO DICTIONARY
 function addWordToDict(word, letters, node){
-  console.log(word, letters, node)
   if(letters.length == 0){
     // Find or add word
     if(node.words.indexOf(word) > -1){
@@ -74,4 +77,10 @@ function addWordToDict(word, letters, node){
     // work down tree to node
     addWordToDict(word, letters.substring(1), node.nodes[num]);
   }
+}
+
+// WRITE WORD TO JS EXPORTS FILE
+function writeWordsToFile(){
+  var text = "module.exports = " + JSON.stringify({"dictionary": dict});
+  fs.writeFile(fileDestination, text);
 }
