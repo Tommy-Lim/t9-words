@@ -30,7 +30,7 @@ function HomeCompCtrl($timeout, WordsService){
     $(domKey).eq(0).css('background-color', 'grey');
     $timeout(function(){
       $(domKey).eq(0).css('background-color', 'lightseagreen');
-    }, 200);
+    }, 300);
 
     if(key == '1'){
       // do nothing

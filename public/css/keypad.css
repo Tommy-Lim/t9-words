@@ -17,9 +17,11 @@
   width: 90px;
   height: 100px;
   border-radius: 4px;
-  margin: 3px;
+  margin: 0 3px;
+  margin-bottom: 10px;
   position: relative;
   background-color: lightseagreen;
+  transition: background-color 300ms;
 }
 
 .key-number{
