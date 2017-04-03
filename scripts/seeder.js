@@ -4,11 +4,22 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/t9words');
 var async = require('async');
 var fs = require('fs');
 
-// GET WORDS
-// after words built into db; stringify content and save locally to array rather than db
-var words =[];
+// FILE TO PULL WORDS FROM
 var fileName = "words.txt";
 
+// ALL WORDS FROM FILE
+var words =[];
+
+// START FILE STREAM
+var input = fs.createReadStream(fileName);
+
+// USE TO SEED DB - CAUTION WILL WRITE TAKE VERY LONG TIME (2H)
+// readLines(input, func, seedDB);
+
+// USE TO PRINT ALL WORDS
+readLines(input, func, printWords);
+
+// READ LINES FROM FILE AND RUN FUNC FOR EACH AND CB AT END
 function readLines(input, func, cb){
   var remaining = '';
 
@@ -32,13 +43,12 @@ function readLines(input, func, cb){
 
 }
 
+// ADD WORD TO GLOBAL WORDS
 function func(data){
   words.push(data);
 }
 
-var input = fs.createReadStream(fileName);
-readLines(input, func, seedDB);
-
+// GET ALL KEYS FROM DB
 function getAllKeys(){
   var result;
   models.Key.find({
@@ -48,6 +58,7 @@ function getAllKeys(){
   })
 }
 
+// TRANFORM WORD TO KEY
 function getKey(word){
   var key = "";
   for(var i=0; i<word.length; i++){
@@ -75,6 +86,7 @@ function getKey(word){
   return key;
 }
 
+// SEED DB WITH GLOBAL WORDS ARRAY
 function seedDB(){
   console.log("Started seeding DB. This may take a while...");
   async.eachSeries(words, function(word, callback){
@@ -111,4 +123,10 @@ function seedDB(){
       console.log("Finished seeding DB with all words.");
     }
   })
+}
+
+// PRINT WORDS USING GLOBAL ARRAY
+function printWords(){
+  console.log("WORDS COUNT:", words.length);
+  console.log("WORDS:", JSON.stringify({words: words});
 }
