@@ -17,7 +17,7 @@ var input = fs.createReadStream(fileName);
 // readLines(input, func, seedDB);
 
 // USE TO PRINT ALL WORDS
-readLines(input, func, printWords);
+// readLines(input, func, printWords);
 
 // READ LINES FROM FILE AND RUN FUNC FOR EACH AND CB AT END
 function readLines(input, func, cb){
