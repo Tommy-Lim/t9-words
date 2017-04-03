@@ -9,7 +9,6 @@ function HomeCompCtrl($timeout, WordsService){
   var homeComp = this;
   homeComp.query = "";
   homeComp.message = "";
-  homeComp.words = [];
   homeComp.results = [];
   homeComp.currentResult = 0;
 
@@ -21,8 +20,8 @@ function HomeCompCtrl($timeout, WordsService){
     console.log("lastnum", lastWord);
     WordsService.getWords(lastWord).then(function(data){
       homeComp.results = data;
+      console.log("results", homeComp.results)
     });
-    console.log("results", homeComp.results)
   }
 
   homeComp.clickKey = function(key){
@@ -46,7 +45,9 @@ function HomeCompCtrl($timeout, WordsService){
       }
     } else if (key == 'Ast'){
       var queryLength = homeComp.query.length;
+      console.log("deleting from ",homeComp.query)
       if(queryLength > 0){
+        console.log("query length", queryLength);
         homeComp.query = homeComp.query.slice(0, queryLength - 1);
         homeComp.message = homeComp.message.slice(0, queryLength - 1);
         homeComp.getWords(homeComp.query);
@@ -54,16 +55,29 @@ function HomeCompCtrl($timeout, WordsService){
         // do nothing
       }
     } else if(key == '0'){
+      console.log("space hit")
+      console.log("Message:"+homeComp.message+"||")
+      var messageLength = homeComp.message.length;
+      console.log("message length:", messageLength);
+
+      var lastChar = homeComp.message.charAt(messageLength);
+      console.log("last char is |"+lastChar+"|");
+      if(lastChar != " " && homeComp.message.length>0){
+        console.log("last char not space, so substring")
+        var lastSpace = homeComp.message.lastIndexOf(" ");
+        console.log("last space index", lastSpace);
+        var subMessage = homeComp.message.substring(0,lastSpace + 1);
+        console.log(subMessage);
+        homeComp.message = subMessage;
+      }
       homeComp.query += " ";
       var word = homeComp.results[homeComp.currentResult]
-      if(homeComp.message == ""){
-        homeComp.message += word;
-      } else{
-        homeComp.message += (" " + word);
+      if(word){
+        homeComp.message += (word + " ");
+      } else {
+        homeComp.message += " ";
       }
-      homeComp.words.push(word);
       homeComp.results = [];
-      // homeComp.getWords(homeComp.query);
     } else{
       homeComp.query += key;
       homeComp.getWords(homeComp.query);
