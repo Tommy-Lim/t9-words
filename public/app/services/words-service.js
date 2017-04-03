@@ -16,14 +16,14 @@ function WordsService($http){
     })
   }
 
-  this.getDict = function(){
+  this.getAllWords = function(){
     var req = {
       url: '/api/words/all',
       method: 'GET'
     }
 
-    $http(req).then(function success(res){
-      console.log(res.data.words);
+    return $http(req).then(function success(res){
+      return res.data.words;
     }, function failure(res){
       console.log("ERROR", res);
     })

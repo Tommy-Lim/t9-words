@@ -21,10 +21,6 @@ function getDict(){
   })
 }
 
-function returnDict(){
-  return dict;
-}
-
 // TRANFORM WORD TO KEY
 function wordToKey(word){
   var key = "";

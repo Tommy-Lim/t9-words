@@ -7,18 +7,118 @@ angular.module('App')
 
 function HomeCompCtrl($timeout, WordsService){
   var homeComp = this;
+
+  // FRONT END VARS
   homeComp.query = "";
   homeComp.message = "";
   homeComp.results = [];
   homeComp.currentResult = 0;
 
+  // DICT VARS
+  homeComp.wordsAddedCount = 0;
+  homeComp.dictLoading = true;
+  homeComp.words = [];
+  homeComp.dict = {
+    words:[],
+    nodes:{}
+  };
+
+  // BUILD DICT
+  function buildDict(){
+    console.log("Loading dictionary...")
+    homeComp.words.forEach(function(word, index){
+      addWordToDict(word, word, homeComp.dict);
+    })
+  }
+
+  // TRANFORM WORD TO KEY
+  function wordToKey(word){
+    var key = "";
+    for(var i=0; i<word.length; i++){
+      key += letterToNumber(word.charAt(i));
+    }
+    return key;
+  }
+
+  // TRANFORM LETTER TO NUMBER
+  function letterToNumber(letter){
+    if ("abc".indexOf(letter)>=0){
+      return 2;
+    } else if("def".indexOf(letter)>=0){
+      return 3;
+    } else if("ghi".indexOf(letter)>=0){
+      return 4;
+    } else if("jkl".indexOf(letter)>=0){
+      return 5;
+    } else if("mno".indexOf(letter)>=0){
+      return 6;
+    } else if("pqrs".indexOf(letter)>=0){
+      return 7;
+    } else if("tuv".indexOf(letter)>=0){
+      return 8;
+    } else if("wxyz".indexOf(letter)>=0){
+      return 9;
+    } else {
+      // add nothing; symbol
+    }
+  }
+
+  // ADD WORD TO DICTIONARY
+  function addWordToDict(word, letters, node){
+    if(letters.length == 0){
+      // Find or add word
+      homeComp.wordsAddedCount++;
+      if(node.words.indexOf(word) > -1){
+        // do nothing, word exists
+      } else{
+        // add word
+        node.words.push(word);
+        if(homeComp.wordsAddedCount == homeComp.wordsLength){
+          console.log("Dictionary loaded.")
+          homeComp.dictLoading = false;
+        }
+      }
+    } else{
+      // work deeper into tree
+      var num = letterToNumber(letters.charAt(0));
+      if(num in node.nodes){
+        // node already exists
+      } else{
+        // create node
+        node.nodes[num] = {
+          words: [],
+          nodes: {}
+        }
+      }
+      // work down tree to node
+      addWordToDict(word, letters.substring(1), node.nodes[num]);
+    }
+  }
+
+  WordsService.getAllWords().then(function(data){
+    homeComp.words = data;
+    homeComp.wordsLength = homeComp.words.length;
+    buildDict();
+  })
+
+
   homeComp.getWords = function(query){
     homeComp.currentResult = 0;
     var queryArray = query.split(" ");
     var lastWord = queryArray[queryArray.length - 1];
-    WordsService.getWords(lastWord).then(function(data){
-      homeComp.results = data;
-    });
+    console.log(lastWord)
+
+    getWordsHelper(lastWord, homeComp.dict);
+
+    function getWordsHelper(numbers, node){
+      if(numbers.length == 0){
+        homeComp.results = node.words;
+      } else if(numbers.charAt(0) in node.nodes){
+        getWordsHelper(numbers.substring(1), node.nodes[numbers.charAt(0)]);
+      } else{
+        homeComp.results == [];
+      }
+    }
   }
 
   homeComp.clickKey = function(key){
