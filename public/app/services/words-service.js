@@ -1,7 +1,7 @@
 angular.module('App')
 .service('WordsService', WordsService);
 
-function WordsService = function($http){
+function WordsService($http){
 
   this.getWords = function(query){
     var req = {
@@ -10,6 +10,7 @@ function WordsService = function($http){
     }
 
     return $http(req).then(function success(res){
+      console.log(res);
       return res;
     }, function failure(res){
       console.log("ERROR", res);

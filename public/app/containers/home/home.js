@@ -8,9 +8,14 @@ angular.module('App')
 function HomeCompCtrl(WordsService){
   var homeComp = this;
   homeComp.query = "";
+  homeComp.results = [];
 
   homeComp.getWords = function(query){
-    WordsService.getWords(query);
+    var queryArray = query.split(" ");
+    var lastWord = queryArray[queryArray.length - 1];
+    console.log(queryArray, lastWord);
+    homeComp.results = WordsService.getWords(query).data;
+    console.log(homeComp.results)
   }
 }
 
