@@ -2,23 +2,28 @@ var WordsFile = require('./words.js')
 var async = require('async');
 var fs = require('fs');
 
+var wordsAddedCount = 0;
 var words = WordsFile.words;
-// var words = ["dad", "bad", "apple"];
+// var words = ["d", "da", "dad", "dad", "bad"];
 
-var fileDestination = "dictionary.js"
+var fileDestination = "dict.js"
 
 var dict = {
   words:[],
   nodes:{}
 };
 
-console.log(words);
+getDict();
 
-words.forEach(function(word){
-  addWordToDict(word, word, dict);
-})
+function getDict(){
+  words.forEach(function(word, index){
+    addWordToDict(word, word, dict);
+  })
+}
 
-console.log(JSON.stringify(dict));
+function returnDict(){
+  return dict;
+}
 
 // TRANFORM WORD TO KEY
 function wordToKey(word){
@@ -56,16 +61,20 @@ function letterToNumber(letter){
 function addWordToDict(word, letters, node){
   if(letters.length == 0){
     // Find or add word
+    wordsAddedCount++;
     if(node.words.indexOf(word) > -1){
       // do nothing, word exists
     } else{
       // add word
       node.words.push(word);
+      if(wordsAddedCount == words.length){
+        writeDictToFile();
+      }
     }
   } else{
     // work deeper into tree
     var num = letterToNumber(letters.charAt(0));
-    if(num in node){
+    if(num in node.nodes){
       // node already exists
     } else{
       // create node
@@ -80,7 +89,7 @@ function addWordToDict(word, letters, node){
 }
 
 // WRITE WORD TO JS EXPORTS FILE
-function writeWordsToFile(){
+function writeDictToFile(){
   var text = "module.exports = " + JSON.stringify({"dictionary": dict});
   fs.writeFile(fileDestination, text);
 }

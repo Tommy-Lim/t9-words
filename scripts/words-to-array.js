@@ -56,6 +56,7 @@ function printWords(){
   console.log("WORDS:", JSON.stringify({words: words}));
 }
 
+// WRITE WORD TO JS EXPORTS FILE
 function writeWordsToFile(){
   var text = "module.exports = " + JSON.stringify({"words": words});
   fs.writeFile(fileDestination, text);
