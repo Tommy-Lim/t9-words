@@ -4,7 +4,10 @@
       {{homeComp.query}}
     </div>
     <div class="results">
-      <div ng-repeat="result in homeComp.results" class="result">
+      <div ng-repeat="result in homeComp.results track by $index"
+            class="result"
+            ng-class="{active: $index==homeComp.currentResult}"
+            >
         {{result}}
       </div>
     </div>
@@ -110,7 +113,7 @@
           #
         </div>
         <div class="key-letters">
-
+          next
         </div>
       </div>
     </div>
