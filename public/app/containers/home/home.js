@@ -24,9 +24,11 @@ function HomeCompCtrl($timeout, WordsService){
   homeComp.clickKey = function(key){
     var domKey = ".key" + key;
     $(domKey).eq(0).css('background-color', 'grey');
+    $(domKey).eq(0).css('transform', 'scale(0.95,0.95)');
     $timeout(function(){
       $(domKey).eq(0).css('background-color', 'lightseagreen');
-    }, 300);
+      $(domKey).eq(0).css('transform', 'scale(1,1)');
+    }, 100);
 
     if(key == '1'){
       // do nothing

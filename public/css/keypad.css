@@ -20,7 +20,7 @@
   margin-bottom: 10px;
   position: relative;
   background-color: lightseagreen;
-  transition: background-color 300ms;
+  transition: background-color 100ms;
 }
 
 .key-number{
