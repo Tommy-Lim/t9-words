@@ -1,9 +1,7 @@
 <div class="container">
   <div class="textarea">
     <div class="message">
-      {{homeComp.message}}
-      <span ng-repeat="word in homeComp.words track by $index">{{word}}</span>
-      {{homeComp.query}}
+      {{homeComp.message}}<span class="cursor">|</span>
     </div>
     <div class="results">
       <div ng-repeat="result in homeComp.results track by $index"

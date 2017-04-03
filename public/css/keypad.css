@@ -9,14 +9,13 @@
 
 .keypad-row{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
 }
 
 .key{
   width: 90px;
   height: 100px;
-  border-radius: 4px;
   margin: 0 3px;
   margin-bottom: 10px;
   position: relative;

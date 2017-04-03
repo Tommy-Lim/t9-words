@@ -1,34 +1,91 @@
 body{
   font-family: 'Roboto', sans-serif;
+  margin: 0;
 }
 
 .container{
   width: 300px;
   margin: 0 auto;
+  border: 10px solid #bcbcbc;
+  background-color: #bcbcbc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .textarea{
-  width: calc(100% - 8px);
+  width: calc(100% - 16px);
   height: 100px;
   font-size: 16px;
   position: relative;
+  background-color: rgba(230,230,230,1);
+  padding: 5px;
 }
 
 .results{
   width: 100%;
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
 }
 
 .result{
   display: inline-block;
   margin: 2px;
   padding: 3px 6px;
-  border-radius: 4px;
   background-color: lightseagreen;
   color: white;
 }
 
 .active{
   background-color: grey;
+}
+
+.cursor {
+  font-weight: 100;
+  animation: 1s blink step-end infinite;
+}
+
+@keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-moz-keyframes blink {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-webkit-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-ms-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
+}
+
+@-o-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: black;
+  }
 }
