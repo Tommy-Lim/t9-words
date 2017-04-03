@@ -1,6 +1,7 @@
 <div class="container">
   <div class="textarea">
     <div class="message">
+      {{homeComp.message}}
       {{homeComp.query}}
     </div>
     <div class="results">
@@ -14,7 +15,7 @@
   </div>
   <div class="keypad">
     <div class="keypad-row">
-      <div class="key key1" ng-click="homeComp.clickKey(1)">
+      <div class="key key1" ng-click="homeComp.clickKey('1')">
         <div class="key-number">
           1
         </div>
@@ -22,7 +23,7 @@
 
         </div>
       </div>
-      <div class="key key2" ng-click="homeComp.clickKey(2)">
+      <div class="key key2" ng-click="homeComp.clickKey('2')">
         <div class="key-number">
           2
         </div>
@@ -30,7 +31,7 @@
           abc
         </div>
       </div>
-      <div class="key key3" ng-click="homeComp.clickKey(3)">
+      <div class="key key3" ng-click="homeComp.clickKey('3')">
         <div class="key-number">
           3
         </div>
@@ -48,7 +49,7 @@
           ghi
         </div>
       </div>
-      <div class="key key5" ng-click="homeComp.clickKey(5)">
+      <div class="key key5" ng-click="homeComp.clickKey('5')">
         <div class="key-number">
           5
         </div>
@@ -56,7 +57,7 @@
           jkl
         </div>
       </div>
-      <div class="key key6" ng-click="homeComp.clickKey(6)">
+      <div class="key key6" ng-click="homeComp.clickKey('6')">
         <div class="key-number">
           6
         </div>
@@ -66,7 +67,7 @@
       </div>
     </div>
     <div class="keypad-row">
-      <div class="key key7" ng-click="homeComp.clickKey(7)">
+      <div class="key key7" ng-click="homeComp.clickKey('7')">
         <div class="key-number">
           7
         </div>
@@ -74,7 +75,7 @@
           pqrs
         </div>
       </div>
-      <div class="key key8" ng-click="homeComp.clickKey(8)">
+      <div class="key key8" ng-click="homeComp.clickKey('8')">
         <div class="key-number">
           8
         </div>
@@ -82,7 +83,7 @@
           tuv
         </div>
       </div>
-      <div class="key key9" ng-click="homeComp.clickKey(9)">
+      <div class="key key9" ng-click="homeComp.clickKey('9')">
         <div class="key-number">
           9
         </div>
@@ -100,7 +101,7 @@
           delete
         </div>
       </div>
-      <div class="key key0" ng-click="homeComp.clickKey(0)">
+      <div class="key key0" ng-click="homeComp.clickKey('0')">
         <div class="key-number">
           0
         </div>

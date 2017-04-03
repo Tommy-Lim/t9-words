@@ -8,6 +8,7 @@ angular.module('App')
 function HomeCompCtrl(WordsService){
   var homeComp = this;
   homeComp.query = "";
+  homeComp.message = "";
   homeComp.results = [];
   homeComp.currentResult = 0;
 
@@ -15,15 +16,16 @@ function HomeCompCtrl(WordsService){
     homeComp.currentResult = 0;
     var queryArray = query.split(" ");
     var lastWord = queryArray[queryArray.length - 1];
-    console.log(queryArray, lastWord)
-    WordsService.getWords(query).then(function(data){
+    console.log("nums", queryArray)
+    console.log("lastnum", lastWord);
+    WordsService.getWords(lastWord).then(function(data){
       homeComp.results = data;
     });
     console.log("results", homeComp.results)
   }
 
   homeComp.clickKey = function(key){
-    if(key == 1){
+    if(key == '1'){
       // do nothing
     } else if(key == '#'){
       var resultLength = homeComp.results.length;
@@ -39,17 +41,22 @@ function HomeCompCtrl(WordsService){
       var queryLength = homeComp.query.length;
       if(queryLength > 0){
         homeComp.query = homeComp.query.slice(0, queryLength - 1);
+        homeComp.message = homeComp.message.slice(0, queryLength - 1);
         homeComp.getWords(homeComp.query);
       } else{
         // do nothing
       }
-    } else if(key == 0){
+    } else if(key == '0'){
       homeComp.query += " ";
-      homeComp.currentResult = 0;
-      // homeComp.getWords(homeComp.query);
+      if(homeComp.message == ""){
+        homeComp.message += homeComp.results[homeComp.currentResult];
+      } else{
+        homeComp.message += (" " + homeComp.results[homeComp.currentResult]);
+      }
       homeComp.results = [];
+      // homeComp.getWords(homeComp.query);
     } else{
-      homeComp.query += (key + "");
+      homeComp.query += key;
       homeComp.getWords(homeComp.query);
     }
   }
