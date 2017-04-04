@@ -105,10 +105,9 @@ function HomeCompCtrl($timeout, WordsService){
   homeComp.getWords = function(query){
     homeComp.currentResult = 0;
     var queryArray = query.split(" ");
-    var lastWord = queryArray[queryArray.length - 1];
-    console.log(lastWord)
+    homeComp.lastWord = queryArray[queryArray.length - 1];
 
-    getWordsHelper(lastWord, homeComp.dict);
+    getWordsHelper(homeComp.lastWord, homeComp.dict);
 
     function getWordsHelper(numbers, node){
       if(numbers.length == 0){
@@ -167,6 +166,7 @@ function HomeCompCtrl($timeout, WordsService){
         homeComp.message += (word + " ");
       }
       homeComp.results = [];
+      homeComp.lastWord = "";
     } else{
       homeComp.query += key;
       homeComp.getWords(homeComp.query);
