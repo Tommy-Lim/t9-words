@@ -46,6 +46,25 @@ body{
   animation: 1s blink step-end infinite;
 }
 
+.text-footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.text-footer > div{
+  display: inline-block;
+  padding: 0 5px;
+}
+
+.fa-github{
+  color: lightseagreen;
+}
+
+.fa-github:hover{
+  color: grey;
+}
+
 @keyframes "blink" {
   from, to {
     color: transparent;

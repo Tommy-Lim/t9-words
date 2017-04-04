@@ -74,7 +74,7 @@ function HomeCompCtrl($timeout, WordsService){
         // add word
         node.words.push(word);
         if(homeComp.wordsAddedCount == homeComp.wordsLength){
-          console.log("Dictionary loaded.")
+          console.log("Dictionary loaded with", homeComp.wordsAddedCount, "words.")
           homeComp.dictLoading = false;
         }
       }
@@ -105,9 +105,10 @@ function HomeCompCtrl($timeout, WordsService){
   homeComp.getWords = function(query){
     homeComp.currentResult = 0;
     var queryArray = query.split(" ");
-    var lastWord = queryArray[queryArray.length - 1].trim();
-
-    getWordsHelper(lastWord, homeComp.dict);
+    var lastWord = queryArray[queryArray.length - 1];
+    if(lastWord.length > 0){
+      getWordsHelper(lastWord, homeComp.dict);
+    }
 
     function getWordsHelper(numbers, node){
       if(numbers.length == 0){
@@ -171,6 +172,10 @@ function HomeCompCtrl($timeout, WordsService){
       var word = homeComp.results[homeComp.currentResult]
       if(word){
         homeComp.message += (word + " ");
+      }else{
+        var tempArr = homeComp.query.split(" ");
+        var tempLast = tempArr[tempArr.length - 2];
+        homeComp.message += (tempLast + " ");
       }
       homeComp.results = [];
       homeComp.lastWord = "";
@@ -183,7 +188,6 @@ function HomeCompCtrl($timeout, WordsService){
   function setLastWord(word){
     var length = homeComp.message.length;
     var lastChar = homeComp.message.charAt(length-1);
-    console.log("last char", lastChar);
     if(!lastChar || lastChar == " "){
       homeComp.lastWord = word;
     } else{
