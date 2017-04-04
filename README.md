@@ -4,4 +4,6 @@ On the back end, a English dictionary compromised of of 187,632 words that has b
 
 Users will type in "43556" for "hello" and other words associated with that hash.
 
+[Check it out](https://t9-emulator.herokuapp.com/)
+
 ![screenshot](./public/img/demo.png)
