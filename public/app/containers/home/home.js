@@ -116,12 +116,13 @@ function HomeCompCtrl($timeout, WordsService){
         if(node.words.length>0){
           setLastWord(homeComp.results[0])
         } else{
-          setLastWord(lastWord)
+          setLastWord(lastWord);
         }
       } else if(numbers.charAt(0) in node.nodes){
         getWordsHelper(numbers.substring(1), node.nodes[numbers.charAt(0)]);
       } else{
         homeComp.results == [];
+        setLastWord(lastWord);
       }
     }
   }
