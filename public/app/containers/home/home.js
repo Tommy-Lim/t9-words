@@ -5,7 +5,7 @@ angular.module('App')
   controllerAs: 'homeComp'
 });
 
-function HomeCompCtrl($timeout, WordsService){
+function HomeCompCtrl($timeout, $document, WordsService){
   var homeComp = this;
 
   // FRONT END VARS
@@ -22,6 +22,17 @@ function HomeCompCtrl($timeout, WordsService){
     words:[],
     nodes:{}
   };
+
+  // EVENT LISTENERS
+  $document[0].addEventListener('keydown', function(e){
+    if(["0","1","2","3","4","5","6","7","8","9"].indexOf(e.key) > -1){
+      homeComp.clickKey(e.key)
+    } else if(e.key == "*"){
+      homeComp.clickKey("Ast");
+    } else if(e.key == "#"){
+      homeComp.clickKey("Hash");
+    }
+  })
 
   // BUILD DICT
   function buildDict(){
@@ -152,16 +163,25 @@ function HomeCompCtrl($timeout, WordsService){
     } else if (key == 'Ast'){
       var queryLength = homeComp.query.length;
       if(queryLength > 0){
+        console.log(queryLength-1);
+        console.log("new query", homeComp.query.slice(0, queryLength - 1));
+        console.log("new message", homeComp.message.slice(0, queryLength - 1))
         homeComp.query = homeComp.query.slice(0, queryLength - 1);
         homeComp.message = homeComp.message.slice(0, queryLength - 1);
-        homeComp.getWords(homeComp.query);
+        queryLength = homeComp.query.length;
+        if (queryLength == 0 ){
+          homeComp.message = "";
+          homeComp.lastWord = "";
+        } else{
+          homeComp.getWords(homeComp.query);
+        }
       } else{
         // do nothing
       }
     } else if(key == '0'){
       homeComp.lastWord = "";
       var messageLength = homeComp.message.length;
-      var lastChar = homeComp.message.charAt(messageLength);
+      var lastChar = homeComp.message.charAt(messageLength -1);
       if(lastChar != " " && homeComp.message.length>0){
         var lastSpace = homeComp.message.lastIndexOf(" ");
         var subMessage = homeComp.message.substring(0,lastSpace + 1);
@@ -198,4 +218,4 @@ function HomeCompCtrl($timeout, WordsService){
 
 }
 
-HomeCompCtrl.$inject = ['$timeout', 'WordsService'];
+HomeCompCtrl.$inject = ['$timeout', '$document', 'WordsService'];
