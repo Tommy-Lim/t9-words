@@ -34,6 +34,13 @@ function HomeCompCtrl($timeout, $document, WordsService){
     }
   })
 
+  // GET ALL WORDS AND BUILD DICT
+  WordsService.getAllWords().then(function(data){
+    homeComp.words = data;
+    homeComp.wordsLength = homeComp.words.length;
+    buildDict();
+  })
+
   // BUILD DICT
   function buildDict(){
     console.log("Loading dictionary...")
@@ -80,9 +87,9 @@ function HomeCompCtrl($timeout, $document, WordsService){
       // Find or add word
       homeComp.wordsAddedCount++;
       if(node.words.indexOf(word) > -1){
-        // do nothing, word exists
+        // DO NOTHING, WORD EXISTS
       } else{
-        // add word
+        // ADD WORD
         node.words.push(word);
         if(homeComp.wordsAddedCount == homeComp.wordsLength){
           console.log("Dictionary loaded with", homeComp.wordsAddedCount, "words.")
@@ -90,55 +97,60 @@ function HomeCompCtrl($timeout, $document, WordsService){
         }
       }
     } else{
-      // work deeper into tree
+      // WORK DEEPER INTO NODE
       var num = letterToNumber(letters.charAt(0));
       if(num in node.nodes){
-        // node already exists
+        // NODE ALREADY EXISTS
       } else{
-        // create node
+        // CREATE NODE
         node.nodes[num] = {
           words: [],
           nodes: {}
         }
       }
-      // work down tree to node
+      // WORK DOWN TREE TO NODE
       addWordToDict(word, letters.substring(1), node.nodes[num]);
     }
   }
 
-  WordsService.getAllWords().then(function(data){
-    homeComp.words = data;
-    homeComp.wordsLength = homeComp.words.length;
-    buildDict();
-  })
-
-
-  homeComp.getWords = function(query){
+  function getWords(){
+    // RESET WORDS
     homeComp.currentResult = 0;
-    var queryArray = query.split(" ");
-    var lastWord = queryArray[queryArray.length - 1];
-    if(lastWord.length > 0){
-      getWordsHelper(lastWord, homeComp.dict);
+    homeComp.results = [];
+
+    // GET END OF QUERY
+    var queryArray = homeComp.query.split(" ");
+    if(homeComp.query.indexOf(" ") > -1){
+      var lastWord = queryArray[queryArray.length - 1];
+    } else{
+      var lastWord = queryArray[0];
     }
+
+    // TRAVERSE TREE TO FIND WORDS
+    getWordsHelper(lastWord, homeComp.dict);
 
     function getWordsHelper(numbers, node){
       if(numbers.length == 0){
-        homeComp.results = node.words;
-        if(node.words.length>0){
-          setLastWord(homeComp.results[0])
+        // AT FINAL NODE, FIND WORDS
+        if(node.words.length > 0){
+          //WORDS EXIST, SET AS RESULTS
+          homeComp.results = node.words;
         } else{
-          setLastWord(lastWord);
+          // NO WORDS EXIST
+          homeComp.results = [];
         }
       } else if(numbers.charAt(0) in node.nodes){
+        // MOVE DOWN TO NEXT NODE IF AVAILABLE
         getWordsHelper(numbers.substring(1), node.nodes[numbers.charAt(0)]);
       } else{
+        // NODE NOT AVAILABLE, END
         homeComp.results == [];
-        setLastWord(lastWord);
       }
     }
   }
 
   homeComp.clickKey = function(key){
+    // DOM MANIPULATION FOR ANIMATION
     var domKey = ".key" + key;
     $(domKey).eq(0).css('background-color', 'grey');
     $(domKey).eq(0).css('transform', 'scale(0.95,0.95)');
@@ -147,81 +159,83 @@ function HomeCompCtrl($timeout, $document, WordsService){
       $(domKey).eq(0).css('transform', 'scale(1,1)');
     }, 100);
 
+    // MESSAGE AND QUERY MODIFICATION BASED ON KEY PRESSED
     if(key == '1'){
-      // do nothing
+      // DO NOTHING
     } else if(key == 'Hash'){
-      var resultLength = homeComp.results.length;
-      if(resultLength > 1){
-        // homeComp.results.push(homeComp.results.splice(0,1)[0]);
-        if(homeComp.currentResult < resultLength - 1){
-          homeComp.currentResult++;
-        } else{
-          homeComp.currentResult = 0;
-        }
-        setLastWord(homeComp.results[homeComp.currentResult])
-      }
+      // NEX BUTTON CLICKED
+      iterateResult();
+      setLastWord()
     } else if (key == 'Ast'){
-      var queryLength = homeComp.query.length;
-      if(queryLength > 0){
-        console.log(queryLength-1);
-        console.log("new query", homeComp.query.slice(0, queryLength - 1));
-        console.log("new message", homeComp.message.slice(0, queryLength - 1))
-        homeComp.query = homeComp.query.slice(0, queryLength - 1);
-        homeComp.message = homeComp.message.slice(0, queryLength - 1);
-        queryLength = homeComp.query.length;
-        if (queryLength == 0 ){
-          homeComp.message = "";
-          homeComp.lastWord = "";
-        } else{
-          homeComp.getWords(homeComp.query);
-        }
-      } else{
-        // do nothing
-      }
+      // DELETE BUTTON CLICKED
+      homeComp.message = deleteOneChar(homeComp.message);
+      homeComp.query = deleteOneChar(homeComp.query);
+      // FIND POSSIBLE WORDS
+      getWords();
+      setLastWord();
     } else if(key == '0'){
-      // var messageLength = homeComp.message.length;
-      // var lastChar = homeComp.message.charAt(messageLength -1);
-      console.log("-------space clicked");
-      console.log(homeComp.query + "xx query");
-      console.log(homeComp.message + "xx message");
-      console.log(homeComp.lastWord + "xx lastword");
-      console.log(homeComp.results, "results");
-
-
-      homeComp.lastWord = "";
-      var messageLength = homeComp.message.length;
-      var lastChar = homeComp.message.charAt(messageLength -1);
-      if(lastChar != " " && homeComp.message.length>0){
-        var lastSpace = homeComp.message.lastIndexOf(" ");
-        var subMessage = homeComp.message.substring(0,lastSpace + 1);
-        homeComp.message = subMessage;
+      // SPACE BUTTON HIT
+      if(getLastChar(homeComp.message) == " "){
+        // DO NOTHING BECAUSE LAST CHAR IS SPACE
+      } else{
+        // ADD SPACE
+        homeComp.message = addOneChar(homeComp.message, " ");
+        homeComp.query = addOneChar(homeComp.query, " ");
       }
-      if(homeComp.query.charAt(homeComp.query.length-1) != " "){
-        homeComp.query += " ";
-      }
-      var word = homeComp.results[homeComp.currentResult]
-      if(word){
-        homeComp.message += (word + " ");
-      }else{
-        var tempArr = homeComp.query.split(" ");
-        var tempLast = tempArr[tempArr.length - 2];
-        homeComp.message += (tempLast + " ");
-      }
-      homeComp.results = [];
-      homeComp.lastWord = "";
     } else{
-      homeComp.query += key;
-      homeComp.getWords(homeComp.query);
+      // LETTER KEY HIT
+      homeComp.message = addOneChar(homeComp.message, key);
+      homeComp.query = addOneChar(homeComp.query, key);
+      // FIND POSSIBLE WORDS
+      getWords();
+      setLastWord()
     }
   }
 
-  function setLastWord(word){
-    var length = homeComp.message.length;
-    var lastChar = homeComp.message.charAt(length-1);
-    if(!lastChar || lastChar == " "){
-      homeComp.lastWord = word;
+  function setLastWord(){
+    var message = getStrStartAndEnd(homeComp.message);
+    if(homeComp.results.length > 0){
+      message.start.push(homeComp.results[homeComp.currentResult]);
+      homeComp.message = message.start.join(" ");
     } else{
-      homeComp.lastWord = "";
+      var query = getStrStartAndEnd(homeComp.query);
+      message.start.push(query.end);
+      homeComp.message = message.start.join(" ");
+    }
+  }
+
+  function getStrStartAndEnd(str){
+    var strArr = str.split(" ");
+    var strLen = strArr.length;
+    var end = strArr.pop();
+    return {
+      start: strArr,
+      end: end
+    }
+  }
+
+  function deleteOneChar(str){
+    var length = str.length;
+    return str.substring(0,str.length-1);
+  }
+
+  function addOneChar(str, char){
+    return str + char;
+  }
+
+  function getLastChar(str){
+    var length = str.length;
+    return str.charAt(length-1);
+  }
+
+  function iterateResult(){
+    var resultLength = homeComp.results.length;
+    if(resultLength > 1){
+      if(homeComp.currentResult < resultLength - 1){
+        homeComp.currentResult++;
+      } else{
+        homeComp.currentResult = 0;
+      }
     }
   }
 
