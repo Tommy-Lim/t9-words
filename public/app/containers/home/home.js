@@ -179,6 +179,15 @@ function HomeCompCtrl($timeout, $document, WordsService){
         // do nothing
       }
     } else if(key == '0'){
+      // var messageLength = homeComp.message.length;
+      // var lastChar = homeComp.message.charAt(messageLength -1);
+      console.log("-------space clicked");
+      console.log(homeComp.query + "xx query");
+      console.log(homeComp.message + "xx message");
+      console.log(homeComp.lastWord + "xx lastword");
+      console.log(homeComp.results, "results");
+
+
       homeComp.lastWord = "";
       var messageLength = homeComp.message.length;
       var lastChar = homeComp.message.charAt(messageLength -1);
