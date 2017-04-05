@@ -27,7 +27,7 @@ function HomeCompCtrl($timeout, $document, WordsService){
   $document[0].addEventListener('keydown', function(e){
     if(["0","1","2","3","4","5","6","7","8","9"].indexOf(e.key) > -1){
       homeComp.clickKey(e.key)
-    } else if(e.key == "*"){
+    } else if(e.key == "*" || e.key == "Backspace"){
       homeComp.clickKey("Ast");
     } else if(e.key == "#"){
       homeComp.clickKey("Hash");
@@ -35,8 +35,10 @@ function HomeCompCtrl($timeout, $document, WordsService){
       homeComp.clickKey("0");
     } else if(e.key == "ArrowRight"){
       homeComp.iterateResult();
+      setLastWord()
     } else if(e.key == "ArrowLeft"){
       homeComp.iterateResult(true);
+      setLastWord()
     }
   })
 
