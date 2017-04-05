@@ -23,7 +23,7 @@ function HomeCompCtrl($timeout, $document, WordsService){
     nodes:{}
   };
 
-  // EVENT LISTENERS
+  // EVENT LISTENERS KEY PRESS
   $document[0].addEventListener('keydown', function(e){
     if(["0","1","2","3","4","5","6","7","8","9"].indexOf(e.key) > -1){
       homeComp.clickKey(e.key)
@@ -40,6 +40,14 @@ function HomeCompCtrl($timeout, $document, WordsService){
       homeComp.iterateResult(true);
       setLastWord()
     }
+  })
+
+  // EVENT LISTENER FOR RESULTS CLICKS
+  $('.results').on('click', 'div', function(e){
+    console.log(e.target.dataset.index);
+    homeComp.currentResult = parseInt(e.target.dataset.index, 10);
+    setLastWord();
+    homeComp.clickKey("0");
   })
 
   // GET ALL WORDS AND BUILD DICT
@@ -202,6 +210,8 @@ function HomeCompCtrl($timeout, $document, WordsService){
   }
 
   function setLastWord(){
+    // FORCE DIGEST
+    $timeout(function(){})
     var message = getStrStartAndEnd(homeComp.message);
     if(homeComp.results.length > 0){
       message.start.push(homeComp.results[homeComp.currentResult]);
