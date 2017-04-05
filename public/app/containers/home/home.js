@@ -168,10 +168,10 @@ function HomeCompCtrl($timeout, $document, WordsService){
   homeComp.clickKey = function(key){
     // DOM MANIPULATION FOR ANIMATION
     var domKey = ".key" + key;
-    $(domKey).eq(0).css('background-color', 'grey');
+    $(domKey).eq(0).css('background', 'grey');
     $(domKey).eq(0).css('transform', 'scale(0.95,0.95)');
     $timeout(function(){
-      $(domKey).eq(0).css('background-color', 'lightseagreen');
+      $(domKey).eq(0).css('background', 'linear-gradient(#4fcbc4, #39b6b5)');
       $(domKey).eq(0).css('transform', 'scale(1,1)');
     }, 100);
 

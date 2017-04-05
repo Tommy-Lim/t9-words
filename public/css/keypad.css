@@ -19,7 +19,7 @@
   margin: 1px;
   margin-bottom: 0;
   position: relative;
-  background-color: lightseagreen;
+  background: linear-gradient(#4fcbc4, #39b6b5);
   transition: background-color 100ms;
 }
 
