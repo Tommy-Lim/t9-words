@@ -10,15 +10,17 @@ body{
   width: 300px;
   margin: 0 auto;
   padding: 10px;
+  padding-top: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .textarea{
-  width: calc(100% - 16px);
-  height: 100px;
-  font-size: 16px;
+  width: calc(100% - 12px);
+  height: calc(100vh - 350px);
+  max-height: 300px;
+  font-size: 22px;
   position: relative;
   background-color: rgba(230,230,230,1);
   padding: 5px;
@@ -28,6 +30,7 @@ body{
   width: 100%;
   position: absolute;
   bottom: 5px;
+  font-size: 18px;
 }
 
 .result{
@@ -48,6 +51,7 @@ body{
 }
 
 .text-footer{
+  margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: space-around;
