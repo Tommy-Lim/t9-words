@@ -31,6 +31,12 @@ function HomeCompCtrl($timeout, $document, WordsService){
       homeComp.clickKey("Ast");
     } else if(e.key == "#"){
       homeComp.clickKey("Hash");
+    } else if(e.key == " "){
+      homeComp.clickKey("0");
+    } else if(e.key == "ArrowRight"){
+      homeComp.iterateResult();
+    } else if(e.key == "ArrowLeft"){
+      homeComp.iterateResult(true);
     }
   })
 
@@ -164,7 +170,7 @@ function HomeCompCtrl($timeout, $document, WordsService){
       // DO NOTHING
     } else if(key == 'Hash'){
       // NEX BUTTON CLICKED
-      iterateResult();
+      homeComp.iterateResult();
       setLastWord()
     } else if (key == 'Ast'){
       // DELETE BUTTON CLICKED
@@ -229,13 +235,30 @@ function HomeCompCtrl($timeout, $document, WordsService){
     return str.charAt(length-1);
   }
 
-  function iterateResult(){
+  homeComp.iterateResult = function(reverse){
+    // FORCE DIGEST
+    $timeout(function(){})
+
     var resultLength = homeComp.results.length;
+    var direction = 1;
+
     if(resultLength > 1){
-      if(homeComp.currentResult < resultLength - 1){
-        homeComp.currentResult++;
+      // ITERATE THROUGH RESULTS
+      if(reverse){
+        // ITERATE TO LEFT
+        direction = - 1;
+        if(homeComp.currentResult == 0){
+          homeComp.currentResult = (resultLength - 1);
+        } else{
+          homeComp.currentResult += direction;
+        }
       } else{
-        homeComp.currentResult = 0;
+        // ITERATE TO RIGHT
+        if(homeComp.currentResult < resultLength - 1){
+          homeComp.currentResult += direction;
+        } else{
+          homeComp.currentResult = 0;
+        }
       }
     }
   }
