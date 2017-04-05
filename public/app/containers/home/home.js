@@ -175,6 +175,7 @@ function HomeCompCtrl($timeout, $document, WordsService){
       setLastWord();
     } else if(key == '0'){
       // SPACE BUTTON HIT
+      homeComp.results = [];
       if(getLastChar(homeComp.message) == " "){
         // DO NOTHING BECAUSE LAST CHAR IS SPACE
       } else{
