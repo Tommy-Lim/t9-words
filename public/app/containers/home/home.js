@@ -193,7 +193,11 @@ function HomeCompCtrl($timeout, $document, WordsService){
       // SPACE BUTTON HIT
       homeComp.results = [];
       if(getLastChar(homeComp.message) == " "){
-        // DO NOTHING BECAUSE LAST CHAR IS SPACE
+        // DELETE SPACE AND ADD PERIOD AND SPACE
+        homeComp.message = deleteOneChar(homeComp.message);
+        homeComp.query = deleteOneChar(homeComp.query);
+        homeComp.message = addOneChar(homeComp.message, ". ");
+        homeComp.query = addOneChar(homeComp.query, ". ");
       } else{
         // ADD SPACE
         homeComp.message = addOneChar(homeComp.message, " ");
