@@ -179,16 +179,16 @@ function HomeCompCtrl($timeout, $document, WordsService){
     if(key == '1'){
       // DO NOTHING
     } else if(key == 'Hash'){
-      // NEX BUTTON CLICKED
-      homeComp.iterateResult();
-      setLastWord()
-    } else if (key == 'Ast'){
       // DELETE BUTTON CLICKED
       homeComp.message = deleteOneChar(homeComp.message);
       homeComp.query = deleteOneChar(homeComp.query);
       // FIND POSSIBLE WORDS
       getWords();
       setLastWord();
+    } else if (key == 'Ast'){
+      // NEX BUTTON CLICKED
+      homeComp.iterateResult();
+      setLastWord()
     } else if(key == '0'){
       // SPACE BUTTON HIT
       homeComp.results = [];

@@ -8,7 +8,7 @@ var fs = require('fs');
 var fileName = "words.txt";
 
 // ALL WORDS FROM FILE
-var words =[];
+var words = [];
 
 // START FILE STREAM
 var input = fs.createReadStream(fileName);
