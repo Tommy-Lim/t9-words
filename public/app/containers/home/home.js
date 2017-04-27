@@ -142,6 +142,11 @@ function HomeCompCtrl($timeout, $document, WordsService){
       var lastWord = queryArray[0];
     }
 
+    // REMOVE ALL PUNCTUATION
+    lastWord = lastWord.replace("!", "");
+    lastWord = lastWord.replace("?", "");
+    lastWord = lastWord.replace(".", "");
+
     // TRAVERSE TREE TO FIND WORDS
     getWordsHelper(lastWord, homeComp.dict);
 
@@ -177,7 +182,30 @@ function HomeCompCtrl($timeout, $document, WordsService){
 
     // MESSAGE AND QUERY MODIFICATION BASED ON KEY PRESSED
     if(key == '1'){
-      // DO NOTHING
+      var symbols = [".","!","?"];
+
+      // CHECK WHICH SYMBOL IS LAST
+      var indexOfSymbol = symbols.indexOf(getLastChar(homeComp.message));
+
+      if(indexOfSymbol > -1){
+        // IF SYMBOL AT END, REMOVE IT
+        homeComp.message = deleteOneChar(homeComp.message);
+        homeComp.query = deleteOneChar(homeComp.query);
+
+        // GO TO NEXT SYMBOL
+        if(indexOfSymbol == symbols.length -1){
+          indexOfSymbol = 0;
+        } else{
+          indexOfSymbol++;
+        }
+      } else{
+        // IF SYMBOL ISNT LAST, SET TO FIRST SYMBOL
+        indexOfSymbol = 0;
+      }
+
+      // ADD SYMBOL TO END
+      homeComp.message = addOneChar(homeComp.message, symbols[indexOfSymbol]);
+      homeComp.query = addOneChar(homeComp.query,  symbols[indexOfSymbol]);
     } else if(key == 'Hash'){
       // DELETE BUTTON CLICKED
       homeComp.message = deleteOneChar(homeComp.message);
